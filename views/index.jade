@@ -1,0 +1,48 @@
+doctype html
+html
+    head
+        link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css')
+        script(src='https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js')
+        title Managed Instance Group Demo 
+    body
+        table(class="striped")
+            colgroup 
+                col(width='200')
+            tbody  
+                tr
+                    td Hostname:
+                    td
+                        b= hostname
+                tr
+                    td Zone: 
+                    td 
+                        b= zone 
+                tr  
+                    td Current load:
+                        if working 
+                            td 
+                                span.btn.red high
+                        else 
+                            td 
+                                span.btn.green none
+                tr 
+                    td Health status 
+                        if healthy 
+                            td  
+                                span.btn.green Healthy 
+                        else
+                            td 
+                                span.btn.red Unhealthy  
+                tr
+                    td Actions:              
+                    td
+                        if healthy 
+                            a.btn.blue(href='/makeUnhealthy') Make unhealthy
+                        else 
+                            a.btn.blue(href='/makeHealthy') Make healthy
+                        a.btn.blue(href='/health') Check health
+                        if working           
+                            a.btn.blue(href='/stopLoad') Stop load
+                        else
+                            a.btn.blue(href='/startLoad') Start load
+
