@@ -20,30 +20,7 @@ class CpuBurner {
     }
 }
 const cpuBurn = new CpuBurner();
-function getZone() {
-    const options = {
-        host: 'metadata.google.internal',
-        path: '/computeMetadata/v1/instance/zone',
-        port: 80,
-        method: 'GET',
-        headers: {
-            'Metadata-Flavor': 'Google'
-        }
-    }
-    const req = http.request(options, res =>{
-        let output = res.on('data', d=>{
-	    return d.toString().replace(/.+zones\//g, '').replace(/\/| /g, '')
-        })
-    })
-    req.on('error', error => {
-        console.error(error)})
-    req.on('data', d => {
-    	return d
-    })
-    req.end()
-   
-}
-let zone = getZone()
+
 app.set('view engine', 'jade')
 app.set('views', './views')
 app.listen(port, () => {
@@ -58,10 +35,8 @@ app.get('/health', async (req, res) => {
     res.render('health', { healthy: healthy })
 })
 app.get('/', async (req, res) => {
-    let zone
     res.render('index', {
         hostname: hostname, 
-        zone: zone, 
         healthy: healthy, 
         working: working 
     })
@@ -71,7 +46,6 @@ app.get('/startLoad', async (req, res) => {
     working = true;
     res.render('index', {
         hostname: hostname,
-        zone: zone,
         healthy: healthy,
         working: working
     })
@@ -81,7 +55,6 @@ app.get('/stopLoad', async (req, res) => {
     working = false;
     res.render('index', {
         hostname: hostname,
-        zone: zone,
         healthy: healthy,
         working: working
     })
@@ -91,7 +64,6 @@ app.get('/makeUnhealthy', async (req, res) => {
     healthy = false;
     res.render('index', {
         hostname: hostname,
-        zone: zone,
         healthy: healthy,
         working: working
     })
@@ -100,7 +72,6 @@ app.get('/makeHealthy', async (req, res) => {
     healthy = true;
     res.render('index', {
         hostname: hostname,
-        zone: zone,
         healthy: healthy,
         working: working
     })
